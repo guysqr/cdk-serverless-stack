@@ -18,7 +18,7 @@ class LambdaStack(core.Stack):
                                  description="This service serves the lambda.")
 
         get_lambda_integration = apigateway.LambdaIntegration(func,
-                                                              request_templates={"application/json": '{ "statusCode": "200" }'})
+                                                              request_templates={"text/html": '{ "statusCode": "200" }'})
 
         api.root.add_method("GET", get_lambda_integration)   # GET /
 
