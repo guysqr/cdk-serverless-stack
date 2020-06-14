@@ -9,8 +9,7 @@ exports.handler = async function (event, context) {
   console.log('## CONTEXT: ' + serialize(context))
   console.log('## EVENT: ' + serialize(event))
   try {
-    let accountSettings = await getAccountSettings()
-    return formatResponse(serialize(accountSettings.AccountUsage))
+    return formatResponse("Hi there")
   } catch (error) {
     return formatError(error)
   }
@@ -20,7 +19,7 @@ var formatResponse = function (body) {
   var response = {
     "statusCode": 200,
     "headers": {
-      "Content-Type": "application/json"
+      "Content-Type": "text/html"
     },
     "isBase64Encoded": false,
     "multiValueHeaders": {
@@ -42,10 +41,6 @@ var formatError = function (error) {
     "body": error.code + ": " + error.message
   }
   return response
-}
-// Use SDK client
-var getAccountSettings = function () {
-  return lambda.getAccountSettings().promise()
 }
 
 var serialize = function (object) {
