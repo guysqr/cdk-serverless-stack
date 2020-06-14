@@ -16,7 +16,11 @@ class LambdaStack(core.Stack):
 
         api = apigateway.RestApi(self, "lambda-service",
                                  rest_api_name="Lambda Service",
-                                 description="This service serves the lambda.")
+                                 description="This service serves the lambda.",
+                                 deploy_options={
+                                     "logging_level": apigateway.MethodLoggingLevel.INFO,
+                                     "tracing_enabled": True
+                                 })
 
         get_lambda_integration = apigateway.LambdaIntegration(func,
                                                               request_templates={"text/html": '{ "statusCode": "200" }'})
