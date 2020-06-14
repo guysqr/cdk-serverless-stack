@@ -9,7 +9,7 @@ exports.handler = async function (event, context) {
   console.log('## CONTEXT: ' + serialize(context))
   console.log('## EVENT: ' + serialize(event))
   try {
-    return formatResponse("Hi there")
+    return formatResponse("<html><h1>Hi there</h1><body>Here is my output</body></html>")
   } catch (error) {
     return formatError(error)
   }
