@@ -10,7 +10,7 @@ class LambdaStack(core.Stack):
         func = lambda_.Function(self, "Lambda",
                                 code=self.lambda_code,
                                 handler="index.handler",
-                                runtime=lambda_.Runtime.NODEJS_10_X,
+                                runtime=lambda_.Runtime.NODEJS_12_X,
                                 tracing=lambda_.Tracing.ACTIVE
                                 )
 

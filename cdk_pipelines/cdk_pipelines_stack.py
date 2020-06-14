@@ -11,8 +11,8 @@ class PipelineStack(core.Stack):
                  lambda_code: lambda_.CfnParametersCode = None, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        code = codecommit.Repository.from_repository_name(self, "ImportedRepo",
-                                                          "pipeline-stack")
+        code = codecommit.Repository.from_repository_name(
+            self, "ImportedRepo", "pipeline-stack")
 
         cdk_build = codebuild.PipelineProject(self, "CdkBuild",
                                               build_spec=codebuild.BuildSpec.from_object(dict(
@@ -28,7 +28,7 @@ class PipelineStack(core.Stack):
                                                               ". .env/bin/activate",
                                                               "pip install -r requirements.txt",
                                                               "pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild aws_cdk.aws_codepipeline",
-                                                              "pip install aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions aws_cdk.aws_s3"]),
+                                                              "pip install aws_cdk.aws_apigateway aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions aws_cdk.aws_s3"]),
                                                       build=dict(commands=[
                                                           "cdk synth PipelineDeployingLambdaStack"])),
                                                   artifacts={
