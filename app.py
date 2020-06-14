@@ -3,7 +3,7 @@
 from aws_cdk import core
 
 from cdk_pipelines.cdk_pipelines_stack import PipelineStack
-from cdk_pipelines.cdk_lambda_stack import LambdaStack
+from cdk_pipelines.lambda_stack import LambdaStack
 
 app = core.App()
 
