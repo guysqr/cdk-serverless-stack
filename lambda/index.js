@@ -11,7 +11,7 @@ exports.handler = async function (event, context) {
   console.log('## EVENT: ' + serialize(event))
   AWSXRay.captureFunc('annotations', function (subsegment) {
     subsegment.addAnnotation('Name', 'lambda-func');
-    subsegment.addAnnotation('UserID', event.userid);
+    subsegment.addAnnotation('UserID', 'guy');
   });
   try {
     return formatResponse("<html><h1>Hi there</h1><body>Here is my output</body></html>")
