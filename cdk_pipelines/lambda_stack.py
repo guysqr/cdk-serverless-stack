@@ -11,6 +11,7 @@ class LambdaStack(core.Stack):
                                 code=self.lambda_code,
                                 handler="index.handler",
                                 runtime=lambda_.Runtime.NODEJS_10_X,
+                                tracing=lambda_.Tracing.ACTIVE
                                 )
 
         api = apigateway.RestApi(self, "lambda-service",
