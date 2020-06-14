@@ -18,10 +18,14 @@ class PipelineStack(core.Stack):
                             version="0.2",
                             phases=dict(
                                 install=dict(
-                                    commands="npm install"),
+                                    commands=[
+                                        "python -m ensurepip --upgrade",
+                                        "python -m pip install --upgrade pip",
+                                        "python -m pip install --upgrade virtualenv",
+                                        "source .env/bin/activate",
+                                        "pip install -r requirements.txt"]),
                                 build=dict(commands=[
-                                    "npm run build",
-                                    "npm run cdk synth -- -o dist"])),
+                                    "cdk synth PipelineDeployingLambdaStack"])),
                             artifacts={
                                 "base-directory": "cdk.out",
                                 "files": [
