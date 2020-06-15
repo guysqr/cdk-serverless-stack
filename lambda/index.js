@@ -10,8 +10,7 @@ exports.handler = async function (event, context) {
   console.log('## CONTEXT: ' + serialize(context))
   console.log('## EVENT: ' + serialize(event))
   AWSXRay.captureFunc('annotations', function (subsegment) {
-    subsegment.addAnnotation('Name', 'lambda-func');
-    subsegment.addAnnotation('UserID', 'guy');
+    subsegment.addAnnotation('Note', 'foo was here');
   });
   try {
     return formatResponse("<html><h1>Hi there</h1><body>Here is my output</body></html>")
@@ -45,6 +44,9 @@ var formatError = function (error) {
     "isBase64Encoded": false,
     "body": error.code + ": " + error.message
   }
+  AWSXRay.captureFunc('annotations', function (subsegment) {
+    subsegment.addAnnotation('Note', 'foo was here');
+  });
   return response
 }
 
