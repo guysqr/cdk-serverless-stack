@@ -46,10 +46,10 @@ At this point you can now synthesize the CloudFormation template for this code.
 $ cdk synth
 ```
 
-If everything works as expected, run
+If everything works as expected, use cdk deploy to deploy the stack - note the two context variables name and count that can be used to set the names of the created resources to allow you to match them to the repos you've created in step 1, and control how many instances of the pipelines you want.
 
 ```
-$ cdk deploy PipelineDeployingLambdaStack
+$ cdk deploy PipelineDeployingLambdaStack -c name=stepfunctions-pipeline-repo -c count=5
 ```
 
 to deploy it to your account.
