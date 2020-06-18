@@ -8,10 +8,15 @@ exports.handler = async function (event, context) {
   AWSXRay.captureFunc('annotations', function (subsegment) {
     subsegment.addAnnotation('Note', 'foo was here');
   });
+
+  heading = "Stepfunctions Pipeline Demo";
+  body = "This is the Lambda function called '" + context.functionName + "'";
+  styles = "<style>html { font-family: Arial, Helvetica, sans-serif; }</style>";
+
   try {
-    return formatResponse("<html><h1>Hi there</h1><body>Here is my output</body></html>")
+    return formatResponse("<html><head>" + styles + "</head><body><h1>" + heading + "</h1><p>" + body + "</p></html>");
   } catch (error) {
-    return formatError(error)
+    return formatError(error);
   }
 }
 

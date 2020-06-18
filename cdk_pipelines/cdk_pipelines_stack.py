@@ -96,7 +96,10 @@ class PipelineStack(core.Stack):
                                                                       action_name="Lambda_CFN_Deploy",
                                                                       template_path=cdk_build_output.at_path(
                                                                           "LambdaStack.template.json"),
-                                                                      stack_name="LambdaDeploymentStack",
+                                                                      stack_name="lambda-deployment-stack-" +
+                                                                      repo_name +
+                                                                      "-" +
+                                                                      str(i),
                                                                       admin_permissions=True,
                                                                       parameter_overrides=dict(
                                                                           lambda_code.assign(
