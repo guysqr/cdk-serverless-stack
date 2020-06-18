@@ -8,6 +8,7 @@ class LambdaStack(core.Stack):
         self.lambda_code = lambda_.Code.from_cfn_parameters()
 
         func = lambda_.Function(self, "Lambda",
+                                function_name="stepfunctions-demo"
                                 code=self.lambda_code,
                                 handler="index.handler",
                                 runtime=lambda_.Runtime.NODEJS_12_X,

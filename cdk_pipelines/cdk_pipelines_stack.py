@@ -13,6 +13,7 @@ class PipelineStack(core.Stack):
 
         repo_name = self.node.try_get_context("name") or "Repo"
         repo_count = self.node.try_get_context("count") or "1"
+        my_construct.node.apply_aspect(SomeAspect(...))
 
         for i in range(1, int(repo_count)+1):
             code = codecommit.Repository.from_repository_name(

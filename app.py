@@ -10,6 +10,8 @@ app = core.App()
 lambda_stack = LambdaStack(app, "LambdaStack")
 
 PipelineStack(app, "PipelineDeployingLambdaStack",
-    lambda_code=lambda_stack.lambda_code)
+              lambda_code=lambda_stack.lambda_code)
+
+core.Tag.add(lambda_stack, "CreatedBy", "PipelineDeployingLambdaStack")
 
 app.synth()
