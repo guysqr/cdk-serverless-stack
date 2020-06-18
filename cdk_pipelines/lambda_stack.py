@@ -1,4 +1,8 @@
 from aws_cdk import core, aws_codedeploy as codedeploy, aws_apigateway as apigateway, aws_lambda as lambda_
+import random
+import string
+randomness = ''.join(random.choice(string.ascii_uppercase +
+                                   string.ascii_lowercase + string.digits) for _ in range(8))
 
 
 class LambdaStack(core.Stack):
@@ -8,7 +12,7 @@ class LambdaStack(core.Stack):
         self.lambda_code = lambda_.Code.from_cfn_parameters()
 
         func = lambda_.Function(self, "Lambda",
-                                function_name="stepfunctions-demo",
+                                function_name="stepfunctions-demo-lambda-"+randomness,
                                 code=self.lambda_code,
                                 handler="index.handler",
                                 runtime=lambda_.Runtime.NODEJS_12_X,
@@ -16,7 +20,7 @@ class LambdaStack(core.Stack):
                                 )
 
         api = apigateway.RestApi(self, "lambda-service",
-                                 rest_api_name="Lambda Service",
+                                 rest_api_name="stepfunctions-demo-api-"+randomness,
                                  description="This service serves the lambda.",
                                  deploy_options={
                                      "logging_level": apigateway.MethodLoggingLevel.INFO,
