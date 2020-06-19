@@ -6,7 +6,7 @@ randomness = ''.join(random.choice(string.ascii_uppercase +
 
 
 class LambdaStack(core.Stack):
-    def __init__(self, app: core.App, id: str, **kwargs):
+    def __init__(self, app: core.App, id: str, config, **kwargs):
         super().__init__(app, id, **kwargs)
 
         self.lambda_code = lambda_.Code.from_cfn_parameters()
