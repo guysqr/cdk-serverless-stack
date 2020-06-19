@@ -79,7 +79,7 @@ And if everything works as expected, let's do the next step.
 This project creates multiple CodePipeline pipelines, each of which will be connected to a CodeCommit repo, so the first step we need to take is to create the CodeCommit repos. To do that, run
 
 ```
-cdk deploy RepoStack 
+cdk deploy RepoStack
 ```
 
 This will use `name` configured in the `demo-config.ini` file and make `count` repos for use by the CodePipeline.
@@ -104,7 +104,7 @@ chmod 700 repo-push.sh
 ./repo-push.sh
 ```
 
-## Deploying the stack
+## Deploying the Pipeline stack
 
 Once you have configured your CodeCommit repos you can run the CDK deploy command for the CodePipeline stack.
 
@@ -114,9 +114,10 @@ $ cdk deploy PipelineDeployingLambdaStack
 
 Assuming the stack creates correctly, you should now have `count` pipelines in CodePipeline, all running their source, build and deploy steps. Once completed you should end up with the following resources in your account
 
-* `count` CodeCommit repositories called "`name`-1", from 1 to `count`
-* `count` CodePipeline pipelines called "pipeline-for-`name`-1", from 1 to `count`
-* `count` Lambda functions called 
+- `count` CodeCommit repositories called "`name`-1", from 1 to `count`
+- `count` CodePipeline pipelines called "pipeline-for-`name`-1", from 1 to `count`
+- `count` Lambda functions called "`project`-lambda-" followed by 8 alphanumeric random characters
+- `count` API Gateway endpoints called "`project`-api-" followed by 8 alphanumeric random characters
 
 ## Hacking this project
 

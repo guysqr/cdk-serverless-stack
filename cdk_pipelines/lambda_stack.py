@@ -21,7 +21,8 @@ class LambdaStack(core.Stack):
                                 )
 
         api = apigateway.RestApi(self, "lambda-service",
-                                 rest_api_name="stepfunctions-demo-api-"+randomness,
+                                 rest_api_name=config["Default"]["project"] +
+                                 "-api-"+randomness,
                                  description="This service serves the lambda.",
                                  deploy_options={
                                      "logging_level": apigateway.MethodLoggingLevel.INFO,
