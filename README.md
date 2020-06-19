@@ -6,7 +6,17 @@ When run, CodePipeline's build stage runs CodeBuild and builds the Lambda functi
 
 [Install the CDK for python before you start.](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html)
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## Configuration
+
+There is a file `demo-config.ini` in the root directory that you should configure first. It contains the following items:
+
+```
+project=demoproject
+name=demorepo
+count=5
+```
+
+These are picked up and used in python and shell scripts to make getting set up easier. Note that we need these to be compatible with AWS naming rules so please stick to alphanumerics for the first two and an integer for the last, as per the defaults.
 
 This project is set up like a standard Python project. The initialization
 process also creates a virtualenv within this project, stored under the .env
@@ -46,7 +56,7 @@ At this point you can now synthesize the CloudFormation template for this code.
 $ cdk synth
 ```
 
-If everything works as expected, use cdk deploy to deploy the stack - note the two context variables name and count that can be used to set the names of the created resources to allow you to match them to the repos you've created in step 1, and control how many instances of the pipelines you want.
+If everything works as expected, you can deploy the stack - note the two context variables name and count that can be used to set the names of the created resources to allow you to match them to the repos you've created in step 1, and control how many instances of the pipelines you want.
 
 ```
 $ cdk deploy PipelineDeployingLambdaStack -c name=stepfunctions-pipeline-repo -c count=5

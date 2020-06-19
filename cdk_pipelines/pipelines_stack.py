@@ -4,6 +4,15 @@ from aws_cdk import (core, aws_codebuild as codebuild,
                      aws_codepipeline_actions as codepipeline_actions,
                      aws_lambda as lambda_, aws_s3 as s3)
 
+import configparser
+
+# have to add a dummy section header to please configparser
+with open('demo-config.ini') as f:
+    file_content = '[Default]\n' + f.read()
+
+config = configparser.RawConfigParser()
+config.read_string(file_content)
+
 
 class PipelineStack(core.Stack):
 
@@ -11,8 +20,10 @@ class PipelineStack(core.Stack):
                  lambda_code: lambda_.CfnParametersCode = None, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        repo_name = self.node.try_get_context("name") or "Repo"
-        repo_count = self.node.try_get_context("count") or "1"
+        repo_name = self.node.try_get_context(
+            "name") or config["Default"]["name"]
+        repo_count = self.node.try_get_context(
+            "count") or config["Default"]["count"]
 
         for i in range(1, int(repo_count)+1):
             code = codecommit.Repository.from_repository_name(
