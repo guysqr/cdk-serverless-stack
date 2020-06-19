@@ -6,24 +6,18 @@ When run, CodePipeline's build stage runs CodeBuild and builds the Lambda functi
 
 [Install the CDK for python before you start.](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html)
 
-## Configuration
+## Getting Started
 
-There is a file `demo-config.ini` in the root directory that you should configure first. It contains the following items:
+Clone the repo
 
 ```
-project=demoproject
-name=demorepo
-count=5
+git clone https://github.com/guysqr/pipelines-demo.git
+cd pipelines-demo
 ```
 
-These are picked up and used in python and shell scripts to make getting set up easier. Note that we need these to be compatible with AWS naming rules so please stick to alphanumerics for the first two and an integer for the last, as per the defaults.
+## Running the CDK project
 
-This project is set up like a standard Python project. The initialization
-process also creates a virtualenv within this project, stored under the .env
-directory. To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+This project is set up like a standard Python project. The initialization process also creates a virtualenv within this project, stored under the .env directory. To create the virtualenv it assumes that there is a `python3` (or `python` for Windows) executable in your path with access to the `venv` package. If for any reason the automatic creation of the virtualenv fails, you can create the virtualenv manually.
 
 To manually create a virtualenv on MacOS and Linux:
 
@@ -53,22 +47,82 @@ $ pip install -r requirements.txt
 At this point you can now synthesize the CloudFormation template for this code.
 
 ```
-$ cdk synth
+$ cdk synth PipelineDeployingLambdaStack
 ```
 
-If everything works as expected, you can deploy the stack - note the two context variables name and count that can be used to set the names of the created resources to allow you to match them to the repos you've created in step 1, and control how many instances of the pipelines you want.
+## Configuration
+
+If you were able to synth the PipelineDeployingLambdaStack then it's time to configure the project and create some AWS resources!
+
+In the root of this directory you will see a file `demo-config.ini`. It contains the following items:
 
 ```
-$ cdk deploy PipelineDeployingLambdaStack -c name=stepfunctions-pipeline-repo -c count=5
+project=demoproject
+name=demorepo
+count=5
 ```
 
-to deploy it to your account.
+These are picked up and used in python and shell scripts to make getting set up easier. Note that we need these to be compatible with AWS naming rules so please stick to alphanumerics for the first two and an integer for the last, as per the defaults.
 
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
-command.
+`name` will be used to name your repositories and `count` will determine how many repos and pipelines you will create. If you're unsure you can just leave the default values, they should be fine.
 
-## Useful commands
+Once you've done that, test the synth again
+
+```
+$ cdk synth PipelineDeployingLambdaStack
+```
+
+And if everything works as expected, let's do the next step.
+
+## Create the CodeCommit repositories
+
+This project creates multiple CodePipeline pipelines, each of which will be connected to a CodeCommit repo, so the first step we need to take is to create the CodeCommit repos. To do that, run
+
+```
+cdk deploy RepoStack 
+```
+
+This will use `name` configured in the `demo-config.ini` file and make `count` repos for use by the CodePipeline.
+
+### Set the CodeCommit repos as remotes for this repo
+
+We need the code in the current working tree to also be pushed to these new CodeCommit repos. To do that I created two helper scripts you can run:
+
+```
+chmod 700 repo-add-remotes.sh
+./repo-add-remotes.sh
+```
+
+Will add the new CodeCommit repos as remotes to this repo.
+
+### Push the code from this repo to the CodeCommit remotes
+
+Thsi script will push the code in this repo to each of the CodeCommit repos.
+
+```
+chmod 700 repo-push.sh
+./repo-push.sh
+```
+
+## Deploying the stack
+
+Once you have configured your CodeCommit repos you can run the CDK deploy command for the CodePipeline stack.
+
+```
+$ cdk deploy PipelineDeployingLambdaStack
+```
+
+Assuming the stack creates correctly, you should now have `count` pipelines in CodePipeline, all running their source, build and deploy steps. Once completed you should end up with the following resources in your account
+
+* `count` CodeCommit repositories called "`name`-1", from 1 to `count`
+* `count` CodePipeline pipelines called "pipeline-for-`name`-1", from 1 to `count`
+* `count` Lambda functions called 
+
+## Hacking this project
+
+Feel free to play around with the stacks in this project to add additional infrastructure or change the configuration of what's defined here. To add additional dependencies, for example other CDK libraries for other AWS services, just add them to your `setup.py` file and rerun the `pip install -r requirements.txt` command.
+
+### Useful commands
 
 - `cdk ls` list all stacks in the app
 - `cdk synth` emits the synthesized CloudFormation template
