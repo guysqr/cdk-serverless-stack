@@ -1,10 +1,20 @@
 # CodePipeline Lambda Deployer
 
-This CDK project sets up a pipeline for deploying an API Gateway fronted Lambda function via CodePipeline. It is linked to a CodeCommit repository which triggers a deployment when changes are committed.
+This CDK project allows you to do the following:
 
-When run, CodePipeline's build stage runs CodeBuild and builds the Lambda function and uses the CDK to build the Lambda/API Gateway deployment stack. Finally CodeDeploy runs a deployment using the CDK-generated CloudFormation to deploy the Lambda code.
+- Create one or more CodeCommit repositories, and push this code to each
+- Create matching CodePipelines for each repository that will deploy this code
 
-[Install the CDK for python before you start.](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html)
+Each pipeline includes a build stage which runs CodeBuild to build the Lambda function and uses the CDK to build the Lambda/API Gateway CloudFormation stack to deploy. The CloudFormation deploy stage will then create
+
+- The Lambda function
+- An API Gateway endpoint in front of the Lambda function
+
+The pipeline will be run whenever changes to the linked repository are committed.
+
+## Prerequisites
+
+You will need to [install the CDK for python before you start](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html).
 
 ## Getting Started
 
@@ -79,12 +89,28 @@ And if everything works as expected, let's do the next step.
 This project creates multiple CodePipeline pipelines, each of which will be connected to a CodeCommit repo, so the first step we need to take is to create the CodeCommit repos. To do that, run
 
 ```
+cdk synth RepoStack
+```
+
+This will use `name` configured in the `demo-config.ini` file and make `count` repos for use by the CodePipeline. If you get no errors, you're good to go ahead and
+
+```
 cdk deploy RepoStack
 ```
 
-This will use `name` configured in the `demo-config.ini` file and make `count` repos for use by the CodePipeline.
+#### Set up Git Remote CodeCommit
 
-### Set the CodeCommit repos as remotes for this repo
+Once you have the repos created, [go into the console](https://ap-southeast-2.console.aws.amazon.com/codesuite/codecommit/repositories?region=ap-southeast-2) and you will see a link to instructions on how to get connected to CodeCommit via HTTPS (GRC):
+
+![alt text](doc/repo-list.png 'Repo List View')
+
+You will need to be using an IAM user who has CodeCommit permissions, and you will need to:
+
+```
+pip install git-remote-codecommit
+```
+
+#### Set the CodeCommit repos as remotes for this repo
 
 We need the code in the current working tree to also be pushed to these new CodeCommit repos. To do that I created two helper scripts you can run:
 
@@ -95,7 +121,7 @@ chmod 700 repo-add-remotes.sh
 
 Will add the new CodeCommit repos as remotes to this repo.
 
-### Push the code from this repo to the CodeCommit remotes
+#### Push the code from this repo to the CodeCommit remotes
 
 Thsi script will push the code in this repo to each of the CodeCommit repos.
 
@@ -103,6 +129,8 @@ Thsi script will push the code in this repo to each of the CodeCommit repos.
 chmod 700 repo-push.sh
 ./repo-push.sh
 ```
+
+> Note this assumes you're connected via GRC, and using ap-southeast-2, so if you're not you will need to edit the script accordingly.
 
 ## Deploying the Pipeline stack
 
@@ -118,6 +146,8 @@ Assuming the stack creates correctly, you should now have `count` pipelines in C
 - `count` CodePipeline pipelines called "pipeline-for-`name`-1", from 1 to `count`
 - `count` Lambda functions called "`project`-lambda-" followed by 8 alphanumeric random characters
 - `count` API Gateway endpoints called "`project`-api-" followed by 8 alphanumeric random characters
+
+![alt text](doc/pipeline-view.png 'Pipeline View')
 
 ## Hacking this project
 
