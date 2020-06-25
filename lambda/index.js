@@ -70,7 +70,7 @@ var formatError = function (error) {
     body: error.code + ': ' + error.message,
   };
   AWSXRay.captureFunc('annotations', function (subsegment) {
-    subsegment.addAnnotation('Note', 'foo was here');
+    subsegment.addAnnotation('Note', 'an error happened');
   });
   return response;
 };
