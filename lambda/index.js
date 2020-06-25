@@ -1,11 +1,11 @@
-const AWSXRay = require('aws-xray-sdk-core');
-const htmlCreator = require('html-creator');
+var AWSXRay = require('aws-xray-sdk-core');
+var htmlCreator = require('html-creator');
 
 // Handler
 exports.handler = async function (event, context) {
-  console.log('## ENVIRONMENT VARIABLES: ' + serialize(process.env));
-  console.log('## CONTEXT: ' + serialize(context));
-  console.log('## EVENT: ' + serialize(event));
+  // console.log('## ENVIRONMENT VARIABLES: ' + serialize(process.env));
+  // console.log('## CONTEXT: ' + serialize(context));
+  // console.log('## EVENT: ' + serialize(event));
   AWSXRay.captureFunc('annotations', function (subsegment) {
     subsegment.addAnnotation('Note', 'foo was here');
   });
@@ -13,7 +13,7 @@ exports.handler = async function (event, context) {
   var html = new htmlCreator([
     {
       type: 'head',
-      content: [{ type: 'title', content: 'Generated HTML' }],
+      content: [{ type: 'title', content: context.functionName }],
     },
     {
       type: 'body',
@@ -37,19 +37,14 @@ exports.handler = async function (event, context) {
     },
   ]);
 
-  // var heading = "Stepfunctions Pipeline Demo";
-  // var body = "This is the Lambda function called '" + context.functionName + "'";
-  // var styles = "<style>html { margin: 100px; background: #009933; color: white; font-family: Arial, Helvetica, sans-serif; }</style>";
-
   try {
-    return formatResponse(html.renderHTML());
-    // return formatResponse("<html><head>" + styles + "</head><body><h1>" + heading + "</h1><p>" + body + "</p></html>");
+    return formatResponse(html.renderHTML(), context);
   } catch (error) {
     return formatError(error);
   }
 };
 
-var formatResponse = function (body) {
+var formatResponse = function (body, context) {
   var response = {
     statusCode: 200,
     headers: {
@@ -57,7 +52,7 @@ var formatResponse = function (body) {
     },
     isBase64Encoded: false,
     multiValueHeaders: {
-      'X-Custom-Header': ['My value', 'My other value'],
+      'X-Lambda-Name': [context.functionName],
     },
     body: body,
   };
