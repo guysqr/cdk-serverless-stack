@@ -11,7 +11,7 @@ exports.handler = async function (event, context) {
 
   heading = "Stepfunctions Pipeline Demo";
   body = "This is the Lambda function called '" + context.functionName + "'";
-  styles = "<style>html { font-family: Arial, Helvetica, sans-serif; }</style>";
+  styles = "<style>html { margin: 100px; background: #009933; color: white; font-family: Arial, Helvetica, sans-serif; }</style>";
 
   try {
     return formatResponse("<html><head>" + styles + "</head><body><h1>" + heading + "</h1><p>" + body + "</p></html>");
