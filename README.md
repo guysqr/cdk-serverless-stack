@@ -27,37 +27,37 @@ cd pipelines-demo
 
 ## Running the CDK project
 
-This project is set up like a standard Python project. The initialization process also creates a virtualenv within this project, stored under the .env directory. To create the virtualenv it assumes that there is a `python3` (or `python` for Windows) executable in your path with access to the `venv` package. If for any reason the automatic creation of the virtualenv fails, you can create the virtualenv manually.
+This project is set up like a standard Python project. To create the virtualenv it assumes that there is a `python3` (or `python` for Windows) executable in your path with access to the `venv` package. .
 
-To manually create a virtualenv on MacOS and Linux:
+To create the virtualenv:
 
 ```
-$ python3 -m venv .env
+python3 -m venv .env
 ```
 
 After the init process completes and the virtualenv is created, you can use the following
 step to activate your virtualenv.
 
 ```
-$ source .env/bin/activate
+source .env/bin/activate
 ```
 
 If you are a Windows platform, you would activate the virtualenv like this:
 
 ```
-% .env\Scripts\activate.bat
+.env\Scripts\activate.bat
 ```
 
 Once the virtualenv is activated, you can install the required dependencies.
 
 ```
-$ pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 At this point you can now synthesize the CloudFormation template for this code.
 
 ```
-$ cdk synth PipelineDeployingLambdaStack
+cdk synth PipelineDeployingLambdaStack
 ```
 
 ## Configuration
