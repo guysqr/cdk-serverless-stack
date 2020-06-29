@@ -19,11 +19,11 @@ app = core.App()
 
 lambda_stack = LambdaStack(app, "LambdaStack", config)
 
-PipelineStack(app, "PipelineDeployingLambdaStack", config,
+PipelineStack(app, "CdkServerlessStack", config,
               lambda_code=lambda_stack.lambda_code)
 
 CodecommitRepoStack(app, "RepoStack", config)
 
-core.Tag.add(lambda_stack, "CreatedBy", "PipelineDeployingLambdaStack")
+core.Tag.add(lambda_stack, "CreatedBy", "CdkServerlessStack")
 
 app.synth()

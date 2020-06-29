@@ -38,7 +38,7 @@ class PipelineStack(core.Stack):
                                                                   "pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild aws_cdk.aws_codepipeline",
                                                                   "pip install aws_cdk.aws_apigateway aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions aws_cdk.aws_s3"]),
                                                         build=dict(commands=[
-                                                            "cdk synth PipelineDeployingLambdaStack"])),
+                                                            "cdk synth CdkServerlessStack"])),
                                                       artifacts={
                                                           "base-directory": "cdk.out",
                                                         "files": [
