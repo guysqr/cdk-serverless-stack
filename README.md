@@ -1,11 +1,15 @@
-# CodePipeline Lambda Deployer
+# CDK Serverless Stack
 
-This CDK project allows you to do the following:
+This is an end-to-end example of using the AWS CDK to create and deploy CodeCommit, CodePipeline, CodeBuild, Lambda and API Gateway - everything you need to build an end-to-end serverless stack.
+
+This CDK project is based on [demo code from AWS](https://docs.aws.amazon.com/cdk/latest/guide/codepipeline_example.html). The original demo code was a bit hard to follow and had some gaps that you had to figure out, which this project fills. This project also adds the CodeCommit repo creation, API Gateway endpoints and adds X-Ray for tracing requests.
+
+Use this project to do the following:
 
 - Create one or more CodeCommit repositories, and push this code to each
 - Create matching CodePipelines for each repository that will deploy this code
 
-Each pipeline includes a build stage which runs CodeBuild to build the Lambda function and uses the CDK to build the Lambda/API Gateway CloudFormation stack to deploy. The CloudFormation deploy stage will then create
+Each pipeline includes a build stage which runs CodeBuild to build the Lambda function you'll find in the `lambda` directory, and uses the CDK to build the CloudFormation stack to deploy it. The CloudFormation deploy stage will create
 
 - The Lambda function
 - An API Gateway endpoint in front of the Lambda function
@@ -21,8 +25,8 @@ You will need to [install the CDK for python before you start](https://docs.aws.
 Clone the repo
 
 ```
-git clone https://github.com/guysqr/pipelines-demo.git
-cd pipelines-demo
+git clone https://github.com/guysqr/cdk-serverless-stack.git
+cd cdk-serverless-stack
 ```
 
 ## Running the CDK project
